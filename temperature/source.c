@@ -1,5 +1,6 @@
 #include "source.h"
 #include "hardware/adc.h"
+#include "tusb.h"
 
 #define TEMPERATURE_UNITS 'C'
 
@@ -27,11 +28,11 @@ int init() {
 void loop() {
     while(true) {
         float temperature = read_onboard_temperature();
-        printf("Onboard temperature = %.02f %c\n", temperature, TEMPERATURE_UNITS);
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
-        sleep_ms(1000);
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
-        sleep_ms(1000);
+        printf("Onboard temperature = %.01f %c\n", temperature, TEMPERATURE_UNITS);
+        // cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+        // sleep_ms(2000);
+        // cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+        sleep_ms(2000);
     }
 }
 
@@ -45,3 +46,4 @@ float read_onboard_temperature() {
 
     return tempC;
 }
+
