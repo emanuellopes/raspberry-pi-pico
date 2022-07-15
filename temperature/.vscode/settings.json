@@ -25,6 +25,7 @@
         "pico.h": "c",
         "config.h": "c",
         "platform.h": "c",
-        "source.h": "c"
+        "source.h": "c",
+        "adc.h": "c"
     }
 }
