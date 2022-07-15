@@ -4,10 +4,14 @@
 
 - Download Pico SDK using git
 
+```bash
 git clone git@github.com:raspberrypi/pico-sdk.git --recurse-submodules
+```
 
 - Set the variable in .bashrc or .zshrc, it depends of if you are using zsh or bash
+```bash
 export PICO_SDK_PATH="$HOME/Documents/raspberry_pi_pico_w/pico-sdk"
+```
 
 For Mac OS install the following libraries to compile the program
 
