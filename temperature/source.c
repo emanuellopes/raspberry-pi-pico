@@ -1,13 +1,6 @@
 #include "source.h"
 #include "hardware/adc.h"
 
-/**
- * Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
-/* Choose 'C' for Celsius or 'F' for Fahrenheit. */
 #define TEMPERATURE_UNITS 'C'
 
 int init();
