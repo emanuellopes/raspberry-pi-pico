@@ -4,7 +4,12 @@ set(PICO_BOARD pico_w)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY build)
 
 # Include the subsidiary .cmake file to get the SDK
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+include($ENV{PICO_SDK_PATH}/pico_sdk_init.cmake)
+include($ENV{PICO_SDK_PATH}/pico_sdk_version.cmake)
+
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.4.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.4.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+endif()
 
 project(Temperature C CXX ASM)
 
@@ -12,7 +17,12 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 # Link the Project to a source file (step 4.6)
-add_executable(Temperature source.c)
+add_executable(Temperature)
+
+target_sources(Temperature PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/src/main.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/temperature.c
+        )
 
 # Example source
 
