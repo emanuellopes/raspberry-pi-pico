@@ -28,3 +28,10 @@ brew install arm-none-eabi-gcc
 
 # 3. Note
 Open the each project in a separated vscode window to make sure vscode is grabbing the correct settings.
+
+# 4. Build project
+1. Create make files
+cmake -B build -S .
+
+2. Inside build folder use make to build .uf2 file
+make
