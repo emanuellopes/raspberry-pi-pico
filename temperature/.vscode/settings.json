@@ -26,6 +26,7 @@
         "config.h": "c",
         "platform.h": "c",
         "source.h": "c",
-        "adc.h": "c"
+        "adc.h": "c",
+        "stdio.h": "c"
     }
 }
