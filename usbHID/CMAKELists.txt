@@ -2,6 +2,8 @@
 # Define Board and cmake version
 cmake_minimum_required(VERSION 3.13)
 set(PICO_BOARD pico_w)
+set(FAMILY rp2040)
+set(BOARD pico_sdk)
 
 # define c library VERSION
 set(CMAKE_C_STANDARD 11)
@@ -25,8 +27,12 @@ add_executable(Keyboard)
 
 target_sources(Keyboard PUBLIC ${SRC_FILES})
 
+#target_sources(Keyboard PUBLIC
+#        ${CMAKE_CURRENT_LIST_DIR}/src/main.c
+#)
+
 # Add the standard library to the build
-target_link_libraries(Keyboard
+target_link_libraries(Keyboard PUBLIC
         pico_stdlib
         pico_util
         pico_cyw43_arch_none
@@ -37,7 +43,7 @@ target_link_libraries(Keyboard
 target_include_directories(Keyboard PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/config)
 
 # Add any user requested libraries   ----------
-target_link_libraries(Keyboard
+target_link_libraries(Keyboard PUBLIC
         tinyusb_host
         tinyusb_board)
 

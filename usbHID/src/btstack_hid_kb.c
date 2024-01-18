@@ -56,9 +56,8 @@
 
 #include "btstack.h"
 
-
-#include "pico/util/queue.h"
-extern queue_t hid_keyboard_report_queue;
+#include "header/pico_queue.h"
+#include "header/btstack_lib.h"
 
 // When not set to 0xffff, sniff and sniff subrating are enabled
 static uint16_t host_max_latency = 1600;
