@@ -2,7 +2,7 @@
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 #include "header/tusb_lib.h"
-#include "header/pico_queue.h"
+#include "header/pico_queue_lib.h"
 #include "header/btstack_lib.h"
 
 queue_t hid_keyboard_report_queue;

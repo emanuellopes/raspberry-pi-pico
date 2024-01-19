@@ -56,8 +56,9 @@
 
 #include "btstack.h"
 
-#include "header/pico_queue.h"
+#include "header/pico_queue_lib.h"
 #include "header/btstack_lib.h"
+#include "config/keyboard_config.h"
 
 // When not set to 0xffff, sniff and sniff subrating are enabled
 static uint16_t host_max_latency = 1600;
@@ -127,7 +128,7 @@ const uint8_t hid_descriptor_keyboard[] = {
 
 static uint8_t hid_service_buffer[300];
 static uint8_t device_id_sdp_service_buffer[100];
-static const char hid_device_name[] = "BTstack HID Keyboard";
+static const char hid_device_name[] = BLE_NAME;
 static btstack_packet_callback_registration_t hci_event_callback_registration;
 static uint16_t hid_cid;
 static uint8_t hid_boot_device = 0;
