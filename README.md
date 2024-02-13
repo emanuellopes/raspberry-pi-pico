@@ -35,3 +35,10 @@ cmake -B build -S .
 
 2. Inside build folder use make to build .uf2 file
 make
+
+# 5. Load program using picotool
+[PicoTool](https://github.com/raspberrypi/picotool)
+
+load program and run the code
+In main function we should put the code stdio_init_all();
+picotool load -v -x program.uf2 -f
