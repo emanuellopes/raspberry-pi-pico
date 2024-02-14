@@ -39,6 +39,8 @@ target_link_libraries(Keyboard PUBLIC
         pico_btstack_cyw43
         pico_btstack_classic)
 
+# pico_btstack_ble this library adds ble
+
 # Include config files for btstack and tusb
 # btstack config
 target_include_directories(Keyboard PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/btstack/header)

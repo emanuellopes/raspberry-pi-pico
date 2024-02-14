@@ -16,7 +16,7 @@ int main()
         return 0;
     }
 
-    btstack_hid_kb_init();
+    btstack_main();
 
     queue_init_with_spinlock(&hid_keyboard_report_queue, sizeof(hid_keyboard_report_t), 10, spin_lock_claim_unused(true));
     board_init();
