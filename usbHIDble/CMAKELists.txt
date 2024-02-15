@@ -1,0 +1,60 @@
+# What CMake to start at
+# Define Board and cmake version
+cmake_minimum_required(VERSION 3.13)
+set(PICO_BOARD pico_w)
+set(FAMILY rp2040)
+set(BOARD pico_sdk)
+
+# define c library VERSION
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+
+set(PROJECT_NAME KeyboardBLE)
+
+# Include .cmake files from sdk
+include($ENV{PICO_SDK_PATH}/pico_sdk_init.cmake)
+include($ENV{PICO_SDK_PATH}/pico_sdk_version.cmake)
+
+file(GLOB SRC_FILES src/*.c src/**/*.c src/*.h src/**/*.h)
+
+# Check sdk version
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.5.1")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.5.1 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+endif()
+
+project(${PROJECT_NAME} C CXX ASM)
+
+# Link source files and executables
+add_executable(${PROJECT_NAME})
+
+target_sources(${PROJECT_NAME} PUBLIC ${SRC_FILES})
+
+# Add the standard library to the build
+target_link_libraries(${PROJECT_NAME} PUBLIC
+        pico_stdlib
+        pico_util
+        pico_cyw43_arch_none
+        pico_btstack_cyw43
+        pico_btstack_ble)
+
+# pico_btstack_ble this library adds ble
+
+# Include config files for btstack and tusb
+# btstack config
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/btstack/header)
+
+#include gatt files
+#pico_btstack_make_gatt_header(picow_bt_example_common_${NAME} INTERFACE ${BTSTACK_EXAMPLE_PATH}/${NAME}.gatt)
+
+# Initialise the Raspberry Pi Pico SDK
+pico_sdk_init()
+
+pico_set_program_name(${PROJECT_NAME} ${PROJECT_NAME})
+pico_set_program_version(${PROJECT_NAME} "2.0")
+
+# enable uart/usb output, disable usb output
+pico_enable_stdio_uart(${PROJECT_NAME} 1)
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
+
+# create map/bin/hex file etc.
+pico_add_extra_outputs(${PROJECT_NAME})
