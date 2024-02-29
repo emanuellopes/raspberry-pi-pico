@@ -91,13 +91,6 @@ static enum {
 } app_state = APP_BOOTING;
 
 //=======Code Modified   Begin=================
-static void send_report(int modifier, int keycode)
-{
-    uint8_t report[] = {0xa1, REPORT_ID, modifier, 0, keycode, 0, 0, 0, 0, 0};
-
-    hid_device_send_interrupt_message(hid_cid, &report[0], sizeof(report));
-}
-
 static void text_timer_handler(btstack_timer_source_t *ts)
 {
     struct
@@ -105,15 +98,53 @@ static void text_timer_handler(btstack_timer_source_t *ts)
         uint8_t modifier;   /**< Keyboard modifier (KEYBOARD_MODIFIER_* masks). */
         uint8_t reserved;   /**< Reserved for OEM use, always set to 0. */
         uint8_t keycode[6]; /**< Key codes of the currently pressed keys. */
-    } report_q;
+    } report_q; //same structure as hid_keyboard_report_t from tusb.h
 
     if (queue_try_remove(&hid_keyboard_report_queue, &report_q))
     {
-        uint8_t report[] = {0xa1, REPORT_ID, report_q.modifier, 0,
-                            report_q.keycode[0], report_q.keycode[1], report_q.keycode[2], report_q.keycode[3], report_q.keycode[4], report_q.keycode[5]};
-        hid_device_send_interrupt_message(hid_cid, &report[0], sizeof(report));
-    }
+        // for (enum ReportIds reportId = REPORT_ID_KEYBOARD; reportId <= REPORT_ID_VENDOR2; reportId++)
+        // {
+        //     uint8_t report[] = {
+        //         0xa1, // I'm not sure if I need to use this value or another value from descriptor
+        //         reportId,
+        //         report_q.modifier,
+        //         0,
+        //         report_q.keycode[0],
+        //         report_q.keycode[1],
+        //         report_q.keycode[2],
+        //         report_q.keycode[3],
+        //         report_q.keycode[4],
+        //         report_q.keycode[5]};
 
+        //     printf("------------------ Keyboard Report ID starting ------------\n");
+        //     printf("Keyboard Report ID: %x\n", report[0]);
+        //     printf("Keyboard Report ID: %x\n", report[1]);
+        //     printf("Keyboard Report ID: %x\n", report[2]);
+        //     printf("Keyboard Report ID: %x\n", report[3]);
+        //     printf("Keyboard Report ID: %x\n", report[4]);
+        //     printf("Keyboard Report ID: %x\n", report[5]);
+        //     printf("Keyboard Report ID: %x\n", report[6]);
+        //     printf("Keyboard Report ID: %x\n", report[7]);
+        //     printf("Keyboard Report ID: %x\n", report[8]);
+        //     printf("Keyboard Report ID: %x\n", report[9]);
+        //     printf("------------------ Keyboard Report ID ending ------------\n");
+
+        // }
+        uint8_t report[] = {
+                0xa1, // I'm not sure if I need to use this value or another value from descriptor
+                REPORT_ID_KEYBOARD,
+                report_q.modifier,
+                0,
+                report_q.keycode[0],
+                report_q.keycode[1],
+                report_q.keycode[2],
+                report_q.keycode[3],
+                report_q.keycode[4],
+                report_q.keycode[5]};
+
+        hid_device_send_interrupt_message(hid_cid, &report[0], sizeof(report));
+
+    }
     hid_device_request_can_send_now_event(hid_cid);
 }
 
@@ -206,11 +237,6 @@ void btstack_main()
 
     // L2CAP
     l2cap_init();
-
-#ifdef ENABLE_BLE
-    // Initialize LE Security Manager. Needed for cross-transport key derivation
-    sm_init();
-#endif
 
     // SDP Server
     sdp_init();
